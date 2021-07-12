@@ -13,10 +13,11 @@ passport.use(
     function (req, email, password, done) {
       User.findOne({ email }, function (err, user) {
         if (err) {
+          console.log('1');
           return done(err);
         }
         if (user) {
-          return done(null, false, "El usuario con ese correo ya existe"); //400
+          return done(null, false, {message:"El usuario con ese correo ya existe"}); //400
         }
         if (password.length < 5) {
           return done(null, false, {
@@ -26,6 +27,7 @@ passport.use(
 
         const newUser = new User();
         newUser.email = req.body.email;
+        newUser.name = req.body.name;
         newUser.password = newUser.encryptPassword(req.body.password);
 
         newUser.save((err) => {
@@ -58,11 +60,11 @@ passport.use(
           return done(
             null,
             false,
-            "La contraseña debe contener al menos 5 caracteres"
+            {message:"La contraseña debe contener al menos 5 caracteres"}
           );
         }
         if (!user.checkPassword(req.body.password)) {
-          return done(null, false, "La contraseña es incorrecta");
+          return done(null, false, { message: "La contraseña es incorrecta" });
         }
 
         return done(null, user);
