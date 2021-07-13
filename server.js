@@ -33,6 +33,6 @@ app.use("/", (req, res) => {
   res.status(200).send({ status: `The api is working ${new Date()}` });
 });
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Aplicacion corriendo en el puerto 3100");
 });
